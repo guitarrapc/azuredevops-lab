@@ -1,0 +1,26 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - "*"
+jobs:
+- job: build
+  displayName: web docker build (dev)
+  pool:
+    name: Hosted Ubuntu 1604
+  workspace:
+    clean: outputs
+  steps:
+  - checkout: self
+    clean: false
+    lfs: false
+    fetchDepth: 1
+  - template: steps/docker_push.yml
+    parameters:
+      Subscription: 'your_azure_subscription'
+      SubscriptionId: '12345-67890-ABCDEF-GHIJKL-OPQRSTU'
+      Registry: 'your_azure_container_registry_name'
+      DockerImageName: 'webapplication'
+      DockerFile: 'WebApplication/Dockerfile'
+      ResourceGroup: 'your_azure_resource_group'
+      ImageName: 'webapplication:$(Build.SourceVersion)_$(Build.BuildId)'

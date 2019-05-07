@@ -1,0 +1,21 @@
+parameters:
+  Subscription: ''
+  SubscriptionId: ''
+  Registry: ''
+  DockerImageName: ''
+  DockerFile: ''
+  ResourceGroup: ''
+  ImageName: ''
+
+steps:
+- bash: 'docker build -t ${{ parameters.Registry }}.azurecr.io/${{ parameters.DockerImageName }}:$(Build.SourceVersion)_$(Build.BuildId) -t ${{ parameters.Registry }}.azurecr.io/${{ parameters.DockerImageName }}:latest -f ${{ parameters.DockerFile }} .'
+  displayName: 'docker build'
+
+- task: Docker@0
+  displayName: 'Push an image'
+  inputs:
+    azureSubscription: ${{ parameters.Subscription }}
+    azureContainerRegistry: '{"loginServer":"${{ parameters.Registry }}.azurecr.io", "id" : "/subscriptions/${{ parameters.SubscriptionId }}/resourceGroups/${{ parameters.ResourceGroup }}/providers/Microsoft.ContainerRegistry/registries/${{ parameters.Registry }}"}'
+    action: 'Push an image'
+    imageName: '${{ parameters.ImageName }}'
+    includeLatestTag: true

@@ -1,0 +1,21 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - '*'
+jobs:
+- job: build
+  displayName: dotnet core (Debug)
+  pool:
+    name: Hosted Ubuntu 1604
+  steps:
+  - checkout: self
+    clean: false
+    lfs: false
+    fetchDepth: 1
+  - template: steps/dotnetcore_publish.yml
+    parameters:
+      ProjectName: 'WebApplication'
+      BuildConfiguration: 'Debug'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
