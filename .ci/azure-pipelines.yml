@@ -10,9 +10,6 @@ jobs:
     name: Hosted Ubuntu 1604
   steps:
   - checkout: self
-    clean: false
-    lfs: false
-    fetchDepth: 1
   - template: steps/dotnetcore_publish.yml
     parameters:
       ProjectName: 'WebApplication'

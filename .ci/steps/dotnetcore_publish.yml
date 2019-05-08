@@ -21,12 +21,6 @@ steps:
     command: publish
     publishWebProjects: false
     projects: '${{ parameters.ProjectName }}/**/*.csproj'
-    arguments: '-c ${{ parameters.BuildConfiguration }} -o ${{ parameters.Output }} ${{ parameters.ExtraBuildArguments }}'
+    arguments: '-c ${{ parameters.BuildConfiguration }} -o $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: false
     modifyOutputPath: false
-- task: ArchiveFiles@2
-  displayName: 'Archive'
-  inputs:
-    rootFolderOrFile: '${{ parameters.ProjectName }}/${{ parameters.Output }}'
-    includeRootFolder: false
-    archiveFile: '$(Build.ArtifactStagingDirectory)/artifact.zip'

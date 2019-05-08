@@ -8,13 +8,8 @@ jobs:
   displayName: web docker build (dev)
   pool:
     name: Hosted Ubuntu 1604
-  workspace:
-    clean: outputs
   steps:
   - checkout: self
-    clean: false
-    lfs: false
-    fetchDepth: 1
   - template: steps/docker_push.yml
     parameters:
       Subscription: 'your_azure_subscription'
